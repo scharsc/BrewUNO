@@ -52,12 +52,12 @@ public:
               BoilService *boilService,
               BrewSettingsService *brewSettingsService,
               MashKettleHeaterService *kettleHeaterService,
-              SpargeKettleHeaterService *spargeKettleHeaterService,
-              BoilKettleHeaterService *boilKettleHeaterService,
+              //SpargeKettleHeaterService *spargeKettleHeaterService,
+              //BoilKettleHeaterService *boilKettleHeaterService,
               ActiveStatus *activeStatus,
               TemperatureService *temperatureService,
-              Pump *pump,
-              Lcd * lcd);
+              Pump *pump/*,
+              Lcd * lcd*/);
 
   ~BrewService();
 
@@ -80,12 +80,12 @@ private:
   MashService *_mashService;
   BrewSettingsService *_brewSettingsService;
   MashKettleHeaterService *_mashKettleHeaterService;
-  SpargeKettleHeaterService *_spargeKettleHeaterService;
-  BoilKettleHeaterService *_boilKettleHeaterService;
+  //SpargeKettleHeaterService *_spargeKettleHeaterService;
+  //BoilKettleHeaterService *_boilKettleHeaterService;
   TemperatureService *_temperatureService;
   Pump *_pump;
   ActiveStatus *_activeStatus;
-  Lcd *_lcd;
+  //Lcd *_lcd;
 
   AsyncJsonWebHandler _updateHandler;
 
