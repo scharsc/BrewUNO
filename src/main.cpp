@@ -22,11 +22,8 @@
 #include <APStatus.h>
 #include <SystemStatus.h>
 
-#include <PID_v1.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
-//#include <LiquidCrystal_I2C.h>
-//#include <pcf8574_esp.h>
 
 #include <MashSettingsService.h>
 #include <BoilSettingsService.h>
@@ -37,13 +34,9 @@
 #include <TemperatureService.h>
 #include <HeaterService.h>
 #include <MashKettleHeaterService.h>
-#include <SpargeKettleHeaterService.h>
 #include <ActiveStatus.h>
 #include <Buzzer.h>
 #include <Pump.h>
-//#include <Lcd.h>
-//#include <Keyboard.h>
-//#include <KeyButton.h>
 
 #define SERIAL_BAUD_RATE 115200
 
@@ -51,18 +44,11 @@ OneWire oneWire(TEMPERATURE_BUS);
 DallasTemperature DS18B20(&oneWire);
 int deviceCount = 0;
 
-//LiquidCrystal_I2C lcd_i2c(0x0, 20, 4);
-
-//TwoWire pcfWire;
-//PCF857x pcf8574(PCF8574_ADDRESS, &pcfWire);
-
 AsyncWebServer server(80);
 
-//SecuritySettingsService securitySettingsService = SecuritySettingsService(&server, &SPIFFS);
 WiFiSettingsService wifiSettingsService = WiFiSettingsService(&server, &SPIFFS);
 APSettingsService apSettingsService = APSettingsService(&server, &SPIFFS);
 OTASettingsService otaSettingsService = OTASettingsService(&server, &SPIFFS);
-//AuthenticationService authenticationService = AuthenticationService(&server, &securitySettingsService);
 
 WiFiScanner wifiScanner = WiFiScanner(&server);
 WiFiStatus wifiStatus = WiFiStatus(&server);
@@ -80,40 +66,10 @@ MashSettingsService mashSettings = MashSettingsService(&server, &SPIFFS);
 BoilSettingsService boilSettingsService = BoilSettingsService(&server, &SPIFFS, &brewSettingsService);
 
 Pump pump = Pump(&server, &activeStatus, &brewSettingsService);
-//Lcd lcd = Lcd(&activeStatus, &wifiStatus, &lcd_i2c);
 MashKettleHeaterService mashKettleHeaterService = MashKettleHeaterService(&temperatureService, &activeStatus, &brewSettingsService);
-//SpargeKettleHeaterService spargeKettleHeaterService = SpargeKettleHeaterService(&temperatureService, &activeStatus, &brewSettingsService);
-//BoilKettleHeaterService boilKettleHeaterService = BoilKettleHeaterService(&temperatureService, &activeStatus, &brewSettingsService);
 MashService mashService = MashService(&SPIFFS, &temperatureService, &pump);
 BoilService boilService = BoilService(&SPIFFS, &temperatureService, &brewSettingsService);
 BrewService brewService = BrewService(&server, &SPIFFS, &mashService, &boilService, &brewSettingsService, &mashKettleHeaterService, /*&spargeKettleHeaterService, &boilKettleHeaterService,*/ &activeStatus, &temperatureService, &pump/*, &lcd*/);
-
-// time_t lastReadButton = now();
-// KeyButton button1(BUTTONUP_BUS, pcf8574);
-// KeyButton button2(BUTTONDOWN_BUS, pcf8574);
-// KeyButton button3(BUTTONSTART_BUS, pcf8574);
-// KeyButton button4(BUTTONENTER_BUS, pcf8574);
-// Keyboard keypad = Keyboard(&activeStatus, &pcf8574, &brewService, &brewSettingsService, &pump, &button1, &button2, &button3, &button4);
-
-// volatile bool PCFInterruptFlag = false;
-// void ICACHE_RAM_ATTR PCFInterrupt()
-// {
-//   if (!PCFInterruptFlag)
-//   {
-//     Serial.println("Button pressed");
-//     lastReadButton = now();
-//   }
-//   PCFInterruptFlag = true;
-// }
-// void KeyPadLoop()
-// {
-//   keypad.update(PCFInterruptFlag);
-//   if (now() - lastReadButton > 10 && PCFInterruptFlag)
-//   {
-//     PCFInterruptFlag = false;
-//     Serial.println("Button released by time");
-//   }
-// }
 
 void setup()
 {
@@ -172,7 +128,9 @@ void setup()
   pinMode(PUMP_BUS, OUTPUT);
   pinMode(BUZZER_BUS, OUTPUT);
   digitalWrite(BUZZER_BUS, LOW);
+
   pinMode(HEATER_BUS, OUTPUT);
+  digitalWrite(HEATER_BUS, LOW);
 
   pump.TurnPumpOff();
   DS18B20.begin();
@@ -188,16 +146,6 @@ void setup()
   temperatureService.DeviceCount = deviceCount;
   brewSettingsService.begin();
   brewService.begin();
-  //lcd.begin();
-
-  //pcfWire.begin(D2, D1);
-  //Specsheets say PCF8574 is officially rated only for 100KHz I2C-bus
-  //PCF8575 is rated for 400KHz
-  //pcfWire.setClock(600000L);
-  //pcf8574.begin();
-  //pinMode(D3, INPUT_PULLUP);
-  //pcf8574.resetInterruptPin();
-  //attachInterrupt(digitalPinToInterrupt(D3), PCFInterrupt, FALLING);
 }
 
 void loop()
@@ -207,5 +155,4 @@ void loop()
   ntpSettingsService.loop();
   otaSettingsService.loop();
   brewService.loop();
-  //KeyPadLoop();
 }

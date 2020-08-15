@@ -19,12 +19,9 @@
 #include <MashService.h>
 #include <BoilService.h>
 #include <MashKettleHeaterService.h>
-#include <SpargeKettleHeaterService.h>
 #include <BrewSettingsService.h>
 #include <ActiveStatus.h>
 #include <Pump.h>
-#include <BoilKettleHeaterService.h>
-#include <Lcd.h>
 
 #define START_BREW_SERVICE_PATH "/rest/startbrew"
 #define STOP_BREW_SERVICE_PATH "/rest/stopbrew"
@@ -52,12 +49,9 @@ public:
               BoilService *boilService,
               BrewSettingsService *brewSettingsService,
               MashKettleHeaterService *kettleHeaterService,
-              //SpargeKettleHeaterService *spargeKettleHeaterService,
-              //BoilKettleHeaterService *boilKettleHeaterService,
               ActiveStatus *activeStatus,
               TemperatureService *temperatureService,
-              Pump *pump/*,
-              Lcd * lcd*/);
+              Pump *pump);
 
   ~BrewService();
 
@@ -80,12 +74,9 @@ private:
   MashService *_mashService;
   BrewSettingsService *_brewSettingsService;
   MashKettleHeaterService *_mashKettleHeaterService;
-  //SpargeKettleHeaterService *_spargeKettleHeaterService;
-  //BoilKettleHeaterService *_boilKettleHeaterService;
   TemperatureService *_temperatureService;
   Pump *_pump;
   ActiveStatus *_activeStatus;
-  //Lcd *_lcd;
 
   AsyncJsonWebHandler _updateHandler;
 
