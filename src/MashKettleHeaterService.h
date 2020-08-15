@@ -9,8 +9,10 @@ public:
   MashKettleHeaterService(TemperatureService *temperatureService, ActiveStatus *activeStatus, BrewSettingsService *brewSettingsService);
 
 protected:
+  boolean IsOn();
+  void SwitchOff();
+  void SwitchOn();
   boolean StopCompute();
-  uint8_t GetBus();
   void TurnOff();
 };
 #endif

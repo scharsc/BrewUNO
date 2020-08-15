@@ -1,18 +1,41 @@
 #include <MashKettleHeaterService.h>
 
+boolean _MashKettleHeaterEnabled;
+
 MashKettleHeaterService::MashKettleHeaterService(TemperatureService *temperatureService,
                                                  ActiveStatus *activeStatus,
                                                  BrewSettingsService *brewSettingsService) : HeaterService(temperatureService,
                                                                                                            activeStatus,
                                                                                                            brewSettingsService)
 {
+  _MashKettleHeaterEnabled = false;
 }
 
-
-uint8_t MashKettleHeaterService::GetBus()
+boolean MashKettleHeaterService::IsOn()
 {
-  return HEATER_BUS;
+  return _MashKettleHeaterEnabled;
 }
+
+void MashKettleHeaterService::SwitchOff()
+{
+  if (_MashKettleHeaterEnabled)
+  {
+    _MashKettleHeaterEnabled = false;
+    digitalWrite(HEATER_BUS, LOW);
+    Serial.println("MashKettleHeaterService::SwitchOff");
+  }
+}
+
+void MashKettleHeaterService::SwitchOn()
+{
+  if (!_MashKettleHeaterEnabled)
+  {
+    _MashKettleHeaterEnabled = true;
+    digitalWrite(HEATER_BUS, HIGH);
+    Serial.println("MashKettleHeaterService::SwitchOn");
+  }
+}
+
 boolean MashKettleHeaterService::StopCompute()
 {
   return !_activeStatus->BrewStarted ||
@@ -27,5 +50,7 @@ void MashKettleHeaterService::TurnOff()
       (_activeStatus->ActiveStep == boil && _activeStatus->EnableBoilKettle) ||
       (_activeStatus->ActiveStep == mash && _activeStatus->PumpIsResting) ||
       (_activeStatus->ActiveStep == mash && !_activeStatus->HeaterOn))
-    digitalWrite(GetBus(), LOW);
+      {
+        SwitchOff();
+      }
 }
