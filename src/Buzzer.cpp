@@ -3,13 +3,13 @@
 void Buzzer::Ring()
 {
 #ifdef BUZZER_BUS
-    digitalWrite(BUZZER_BUS, HIGH);
+    tone(BUZZER_BUS, 1000);
     delay(500);
-    digitalWrite(BUZZER_BUS, LOW);
+    noTone(BUZZER_BUS);
     delay(500);
-    digitalWrite(BUZZER_BUS, HIGH);
+    tone(BUZZER_BUS, 1000);
     delay(500);
-    digitalWrite(BUZZER_BUS, LOW);
+    noTone(BUZZER_BUS);
 #endif  // BUZZER_BUS
 }
 
@@ -25,9 +25,9 @@ void Buzzer::Ring(int count, int duration)
 #ifdef BUZZER_BUS
     for (byte i = 0; i < count; i++)
     {
-        digitalWrite(BUZZER_BUS, HIGH);
+        tone(BUZZER_BUS, 1000);
         delay(duration);
-        digitalWrite(BUZZER_BUS, LOW);
+        noTone(BUZZER_BUS);
         delay(500);
     }
 #endif  // BUZZER_BUS

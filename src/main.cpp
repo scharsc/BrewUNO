@@ -128,7 +128,6 @@ void setup()
 
 #ifdef BUZZER_BUS
   pinMode(BUZZER_BUS, OUTPUT);
-  digitalWrite(BUZZER_BUS, LOW);
 #endif  // BUZZER_BUS
 
   pinMode(HEATER_BUS, OUTPUT);
