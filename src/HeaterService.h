@@ -18,41 +18,15 @@ class HeaterService
 public:
   HeaterService(TemperatureService *temperatureService,
                 ActiveStatus *activeStatus,
-                BrewSettingsService *brewSettingsService) : _temperatureService(temperatureService),
-                                                            _activeStatus(activeStatus),
-                                                            _brewSettingsService(brewSettingsService)
+                BrewSettingsService *brewSettingsService);
 
-  {
-  }
+  HeaterServiceStatus Compute(double input, double target, double heaterPercentage);
 
-  HeaterServiceStatus Compute(double input, double target, double heaterPercentage)
-  {
-    HeaterServiceStatus status;
-    status.PIDActing = false;
-    status.PWM = 0;
-  
-    if (StopCompute())
-    {
-      TurnOff();
-      status.PWMPercentage = (IsOn()) ? 100 : 0;
-      return status;
-    }
-
-    if (input < target)
-      SwitchOn();
-    else
-      SwitchOff();
-
-    status.PWMPercentage = (IsOn()) ? 100 : 0;
-    return status;
-  }
-
-protected:
-  virtual boolean IsOn();
-  virtual void SwitchOff();
-  virtual void SwitchOn();
-  virtual boolean StopCompute();
-  virtual void TurnOff();
+private:
+  boolean IsOn();
+  void SwitchOff();
+  void SwitchOn();
+  boolean StopCompute();
 
   TemperatureService *_temperatureService;
   ActiveStatus *_activeStatus;

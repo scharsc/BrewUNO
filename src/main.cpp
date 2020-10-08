@@ -33,7 +33,6 @@
 #include <BoilService.h>
 #include <TemperatureService.h>
 #include <HeaterService.h>
-#include <MashKettleHeaterService.h>
 #include <ActiveStatus.h>
 #include <Buzzer.h>
 #include <Pump.h>
@@ -66,10 +65,10 @@ MashSettingsService mashSettings = MashSettingsService(&server, &SPIFFS);
 BoilSettingsService boilSettingsService = BoilSettingsService(&server, &SPIFFS, &brewSettingsService);
 
 Pump pump = Pump(&server, &activeStatus, &brewSettingsService);
-MashKettleHeaterService mashKettleHeaterService = MashKettleHeaterService(&temperatureService, &activeStatus, &brewSettingsService);
+HeaterService heaterService = HeaterService(&temperatureService, &activeStatus, &brewSettingsService);
 MashService mashService = MashService(&SPIFFS, &temperatureService, &pump);
 BoilService boilService = BoilService(&SPIFFS, &temperatureService, &brewSettingsService);
-BrewService brewService = BrewService(&server, &SPIFFS, &mashService, &boilService, &brewSettingsService, &mashKettleHeaterService, /*&spargeKettleHeaterService, &boilKettleHeaterService,*/ &activeStatus, &temperatureService, &pump/*, &lcd*/);
+BrewService brewService = BrewService(&server, &SPIFFS, &mashService, &boilService, &brewSettingsService, &heaterService, &activeStatus, &temperatureService, &pump);
 
 void setup()
 {

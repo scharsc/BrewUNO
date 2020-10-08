@@ -5,7 +5,7 @@ BrewService::BrewService(AsyncWebServer *server,
                          MashService *mashService,
                          BoilService *boilService,
                          BrewSettingsService *brewSettingsService,
-                         MashKettleHeaterService *mashKettleHeaterService,
+                         HeaterService *heaterService,
                          ActiveStatus *activeStatus,
                          TemperatureService *temperatureService,
                          Pump *pump) : _server(server),
@@ -13,7 +13,7 @@ BrewService::BrewService(AsyncWebServer *server,
                                      _mashService(mashService),
                                      _boilService(boilService),
                                      _brewSettingsService(brewSettingsService),
-                                     _mashKettleHeaterService(mashKettleHeaterService),
+                                     _heaterService(heaterService),
                                      _activeStatus(activeStatus),
                                      _temperatureService(temperatureService),
                                      _pump(pump)
@@ -120,7 +120,7 @@ void BrewService::stopBrew()
 {
     _activeStatus->SaveActiveStatus(0, 0, 0, 0, -1, "", 0, 0, none, false);
     _pump->TurnPumpOff();
-    _mashKettleHeaterService->Compute(_activeStatus->Temperature, _activeStatus->TargetTemperature, _brewSettingsService->MashHeaterPercentage);
+    _heaterService->Compute(_activeStatus->Temperature, _activeStatus->TargetTemperature, _brewSettingsService->MashHeaterPercentage);
 }
 
 void BrewService::nextStepHttp(AsyncWebServerRequest *request)
@@ -240,7 +240,7 @@ void BrewService::loop()
 
 void BrewService::HeaterCompute()
 {
-    HeaterServiceStatus mashStatus = _mashKettleHeaterService->Compute(_activeStatus->Temperature, _activeStatus->TargetTemperature, _brewSettingsService->MashHeaterPercentage);
+    HeaterServiceStatus mashStatus = _heaterService->Compute(_activeStatus->Temperature, _activeStatus->TargetTemperature, _brewSettingsService->MashHeaterPercentage);
     _activeStatus->PWM = mashStatus.PWM;
     _activeStatus->PWMPercentage = mashStatus.PWMPercentage;
     _activeStatus->PIDActing = mashStatus.PIDActing;

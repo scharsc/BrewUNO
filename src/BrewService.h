@@ -18,7 +18,7 @@
 #include <enum.h>
 #include <MashService.h>
 #include <BoilService.h>
-#include <MashKettleHeaterService.h>
+#include <HeaterService.h>
 #include <BrewSettingsService.h>
 #include <ActiveStatus.h>
 #include <Pump.h>
@@ -48,7 +48,7 @@ public:
               MashService *mashService,
               BoilService *boilService,
               BrewSettingsService *brewSettingsService,
-              MashKettleHeaterService *kettleHeaterService,
+              HeaterService *heaterService,
               ActiveStatus *activeStatus,
               TemperatureService *temperatureService,
               Pump *pump);
@@ -73,7 +73,7 @@ private:
   BoilService *_boilService;
   MashService *_mashService;
   BrewSettingsService *_brewSettingsService;
-  MashKettleHeaterService *_mashKettleHeaterService;
+  HeaterService *_heaterService;
   TemperatureService *_temperatureService;
   Pump *_pump;
   ActiveStatus *_activeStatus;
