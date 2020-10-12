@@ -9,6 +9,10 @@
 #define WIFI_RECONNECTION_DELAY 1000 * 10
 #define WIFI_RECONNECTION_ATTEMPT 5
 
+#define DEFAULT_WIFI_SSID "ssid"
+#define DEFAULT_WIFI_PASSWORD "password"
+#define DEFAULT_WIFI_HOSTNAME "BrewUno"
+
 class WiFiSettingsService : public AdminSettingsService {
 
   public:

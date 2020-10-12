@@ -19,9 +19,9 @@ void WiFiSettingsService::begin()
 
 void WiFiSettingsService::readFromJsonObject(JsonObject &root)
 {
-  _ssid = root["ssid"] | "";
-  _password = root["password"] | "";
-  _hostname = root["hostname"] | "";
+  _ssid = root["ssid"] | DEFAULT_WIFI_SSID;
+  _password = root["password"] | DEFAULT_WIFI_PASSWORD;
+  _hostname = root["hostname"] | DEFAULT_WIFI_HOSTNAME;
   _staticIPConfig = root["static_ip_config"] | false;
 
   // extended settings
